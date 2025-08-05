@@ -9,7 +9,7 @@ export default function MealItem({ title, slug, image, summary, creator }) {
       <header>
         <div className={classes.image}>
           <Image
-            src={`/images/${image}`}
+            src={`/assets/images/${image}`}
             alt={title}
             fill
           />
