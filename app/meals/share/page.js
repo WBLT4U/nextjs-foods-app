@@ -1,6 +1,8 @@
 'use client';
 
 import { useFormState } from 'react-dom';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 import ImagePicker from '@/components/meals/image-picker';
 import classes from './page.module.css';
@@ -9,6 +11,14 @@ import MealsFormSubmit from '@/components/meals/meals-form-submit';
 
 export default function ShareMealPage() {
   const [state, formAction] = useFormState(shareMeal, { message: null });
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.message === '') {
+      // If message is empty (meaning successful redirect was caught)
+      router.push('/meals');
+    }
+  }, [state, router]);
 
   return (
     <>
@@ -48,10 +58,10 @@ export default function ShareMealPage() {
             ></textarea>
           </p>
           <ImagePicker label="Your image" name="image" />
-          {state.message && <p>{state.message}</p>}
-          <p className={classes.actions}>
-            <MealsFormSubmit />
-          </p>
+          {state.message && state.message !== '' && (
+  <p className={classes.error}>{state.message}</p>
+)}
+<MealsFormSubmit />
         </form>
       </main>
     </>

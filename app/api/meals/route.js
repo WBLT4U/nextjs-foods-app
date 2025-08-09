@@ -1,30 +1,40 @@
 import { MongoClient } from 'mongodb';
 
 export async function POST(request) {
-  const data = await request.json();
-
-  let client;
   try {
-    client = await MongoClient.connect(process.env.MONGODB_URI);
-    const db = client.db();
-    const mealsCollection = db.collection('meals');
+    const data = await request.json();
+    
+    let client;
+    try {
+      client = await MongoClient.connect(process.env.MONGODB_URI);
+      const db = client.db();
+      const mealsCollection = db.collection('meals');
 
-    const result = await mealsCollection.insertOne(data);
-    return new Response(JSON.stringify({ message: 'Meal inserted!', id: result.insertedId }), {
-      status: 201,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+      const result = await mealsCollection.insertOne(data);
+      return new Response(JSON.stringify({ 
+        message: 'Meal inserted!', 
+        id: result.insertedId,
+        slug: data.slug
+      }), {
+        status: 201,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } finally {
+      if (client) await client.close();
+    }
   } catch (error) {
-    return new Response(JSON.stringify({ message: 'Failed to insert meal!' }), {
+    console.error('API Error:', error);
+    return new Response(JSON.stringify({ 
+      message: error.message || 'Failed to insert meal!',
+      success: false
+    }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
       },
     });
-  } finally {
-    if (client) await client.close();
   }
 }
 

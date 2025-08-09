@@ -9,10 +9,11 @@ export default function MealItem({ title, slug, image, summary, creator }) {
       <header>
         <div className={classes.image}>
           <Image
-            src={`/assets/images/${image}`}
-            alt={title}
-            fill
-          />
+  src={`/images/${image}`}
+  alt={title}
+  fill
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+/>
         </div>
         <div className={classes.headerText}>
           <h2>{title}</h2>
