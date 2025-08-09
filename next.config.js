@@ -1,14 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: ['res.cloudinary.com'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'maxschwarzmueller-nextjs-demo-users-image.s3.amazonaws.com',
+        hostname: 'res.cloudinary.com',
         port: '',
         pathname: '/**',
       },
     ],
+  },
+  experimental: {
+    serverActions: true,
   },
 };
 

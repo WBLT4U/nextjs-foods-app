@@ -15,8 +15,8 @@ export default function ShareMealPage() {
 
   useEffect(() => {
     if (state.message === '') {
-      // If message is empty (meaning successful redirect was caught)
       router.push('/meals');
+      router.refresh();
     }
   }, [state, router]);
 
@@ -59,9 +59,11 @@ export default function ShareMealPage() {
           </p>
           <ImagePicker label="Your image" name="image" />
           {state.message && state.message !== '' && (
-  <p className={classes.error}>{state.message}</p>
-)}
-<MealsFormSubmit />
+            <p className={classes.error}>{state.message}</p>
+          )}
+          <p className={classes.actions}>
+            <MealsFormSubmit />
+          </p>
         </form>
       </main>
     </>

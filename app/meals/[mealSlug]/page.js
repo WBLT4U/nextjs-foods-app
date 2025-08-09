@@ -6,14 +6,9 @@ import classes from './page.module.css';
 
 export async function generateMetadata({ params }) {
   const meal = await getMeal(params.mealSlug);
-
-  if (!meal) {
-    notFound();
-  }
-
   return {
-    title: meal.title,
-    description: meal.summary,
+    title: meal?.title || 'Meal not found',
+    description: meal?.summary,
   };
 }
 
@@ -31,9 +26,10 @@ export default async function MealDetailsPage({ params }) {
       <header className={classes.header}>
         <div className={classes.image}>
           <Image
-            src={`/images/${meal.image}`}
+            src={meal.image}
             alt={meal.title}
             fill
+            priority
           />
         </div>
         <div className={classes.headerText}>
