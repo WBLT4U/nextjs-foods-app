@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import ImagePicker from '@/components/meals/image-picker';
@@ -10,13 +10,15 @@ import { shareMeal } from '@/lib/actions';
 import MealsFormSubmit from '@/components/meals/meals-form-submit';
 
 export default function ShareMealPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [state, formAction] = useFormState(shareMeal, { message: null });
   const router = useRouter();
 
   useEffect(() => {
     if (state.message === '') {
+      // Success case - redirect to meals page
       router.push('/meals');
-      router.refresh();
+      router.refresh(); // Ensure new data is loaded
     }
   }, [state, router]);
 
@@ -29,7 +31,14 @@ export default function ShareMealPage() {
         <p>Or any other meal you feel needs sharing!</p>
       </header>
       <main className={classes.main}>
-        <form className={classes.form} action={formAction}>
+        <form 
+          className={classes.form} 
+          action={async (formData) => {
+            setIsSubmitting(true);
+            await formAction(formData);
+            setIsSubmitting(false);
+          }}
+        >
           <div className={classes.row}>
             <p>
               <label htmlFor="name">Your name</label>
@@ -62,7 +71,7 @@ export default function ShareMealPage() {
             <p className={classes.error}>{state.message}</p>
           )}
           <p className={classes.actions}>
-            <MealsFormSubmit />
+            <MealsFormSubmit disabled={isSubmitting} />
           </p>
         </form>
       </main>
