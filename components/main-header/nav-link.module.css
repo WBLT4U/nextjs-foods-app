@@ -4,6 +4,9 @@
   font-weight: bold;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem); /* Responsive font size */
+  transition: all 0.3s ease-in-out;
+  display: inline-block; /* Ensures padding applies properly */
 }
 
 .link:hover,
@@ -20,4 +23,19 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Small devices (mobile) */
+@media (max-width: 600px) {
+  .link {
+    padding: 0.7rem 1.2rem; /* Bigger tap area */
+    font-size: 1rem;
+  }
+}
+
+/* Large devices (desktop) */
+@media (min-width: 1024px) {
+  .link {
+    font-size: 1.1rem;
+  }
 }
